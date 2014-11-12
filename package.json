@@ -19,5 +19,8 @@
   "homepage": "https://github.com/mlebrun/the-list",
   "dependencies": {
     "express": "^4.10.2"
+  },
+  "engines": {
+    "node": "0.10.x"
   }
 }
