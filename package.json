@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/mlebrun/the-list/issues"
   },
-  "homepage": "https://github.com/mlebrun/the-list"
+  "homepage": "https://github.com/mlebrun/the-list",
+  "dependencies": {
+    "express": "^4.10.2"
+  }
 }
