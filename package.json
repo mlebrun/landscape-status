@@ -4,6 +4,7 @@
   "description": "Single page app to manage a weekly soccer pick up game list.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
