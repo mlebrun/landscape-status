@@ -1,4 +1,2 @@
-the-list
-========
-
-Single page app to manage a weekly soccer pick up game list.
+# landscape-status
+Slack Chat integration to easily manage landscape environments.

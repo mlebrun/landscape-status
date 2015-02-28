@@ -1,7 +1,7 @@
 {
-  "name": "the-list",
+  "name": "landscape-status",
   "version": "0.0.1",
-  "description": "Single page app to manage a weekly soccer pick up game list.",
+  "description": "Slack Chat integration to easily manage landscape environments.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mlebrun/the-list.git"
+    "url": "https://github.com/mlebrun/landscape-status"
   },
   "author": "Matthew LeBrun",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mlebrun/the-list/issues"
+    "url": "https://github.com/mlebrun/landscape-status/issues"
   },
-  "homepage": "https://github.com/mlebrun/the-list",
+  "homepage": "https://github.com/mlebrun/landscape-status",
   "dependencies": {
     "bluebird": "^2.9.13",
     "body-parser": "^1.12.0",
