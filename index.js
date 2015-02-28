@@ -1,15 +1,18 @@
 var express = require('express');
-var app = express();
 var pg = require('pg');
+var bodyParser = require('body-parser');
+var app = express();
 
 var port = process.env.PORT || 5000;
 var conString = process.env.HEROKU_POSTGRESQL_YELLOW_URL || false;
 
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
 app.post('/', function (req, res) {
 
-  console.log(req.query);
+  console.log(req.body);
 
-  pg.connect(conString, function(err, client, done) {
+  pg.connect(conString, urlencodedParser, function(err, client, done) {
     if(err) {
       return res.send('Error fetching client from pool');
     }
