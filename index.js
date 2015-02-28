@@ -11,27 +11,27 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var operations = {
   list: {
     query: 'SELECT * FROM landscapes',
-    handler: getLandscapesHandler,
+    handler: listHandler,
   },
   add: {
     query: 'INSERT INTO landscapes (name) VALUES ($1) ',
-    handler: addLandscapeHandler,
+    handler: operationHandler,
   },
   remove: {
     query: 'DELETE FROM landscapes WHERE name = $1',
-    handler: removeLandscapeHandler,
+    handler: operationHandler,
   },
   lock: {
     query: 'UPDATE landscapes SET locked_by = $2 WHERE name = $1',
-    handler: lockLandscapeHandler,
+    handler: operationHandler,
   },
   unlock: {
     query: 'UPDATE landscapes SET locked_by = NULL WHERE name = $1',
-    handler: unlockLandscapeHandler,
+    handler: operationHandler,
   }
 };
 
-function getLandscapesHandler(result) {
+function listHandler(result) {
   if (!result.rows.length) {
     return 'No landscapes found';
   }
@@ -48,26 +48,33 @@ function getLandscapesHandler(result) {
   return list;
 }
 
-function addLandscapeHandler(result) { console.log(result); return 'Successful!'; }
-function removeLandscapeHandler(result) { console.log(result); return 'Successful!'; }
-function lockLandscapeHandler(result) { console.log(result); return 'Successful!'; }
-function unlockLandscapeHandler(result) { console.log(result); return 'Successful!'; }
+function operationHandler(result) {
+  if (result.rowCount) {
+    return 'Successful!';
+  }
+
+  return 'Something went wrong!';
+}
 
 app.post('/', urlencodedParser, function (req, res) {
 
+  // parsing `text` for args
   var parsed = req.body.text.split(' '),
       command = (!parsed || parsed.length < 2) ? 'list' : parsed[0],
       input = '',
       sql = '',
       params = [];
 
+  // no command, no fun for you!
   if (!operations[ command ]) {
     return res.send('Action Unsupported');
   }
 
+  // get query/handler from operations map
   sql = operations[ command ].query;
   handler = operations[ command ].handler;
 
+  // determine landscape and parameters if necessary
   if (command !== 'list') {
     landscape = parsed[1];
     params.push(landscape);
@@ -77,11 +84,15 @@ app.post('/', urlencodedParser, function (req, res) {
     }
   }
 
+  // execute query and handler
   db.connectAsync(conString).spread(function(connection, release) {
     return connection.queryAsync(sql, params)
       .then(handler)
       .then(function(response_text) {
         res.send(response_text);
+      })
+      .catch(function(e) {
+        res.send(e.name + ': ' + e.message);
       })
       .finally(function() {
         release();
