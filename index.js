@@ -36,11 +36,13 @@ function getLandscapesHandler(result) {
     return 'No landscapes found';
   }
 
+  var list = "Landscapes:\n\n";
+
   landscapes = result.rows;
 
   for (var i = landscapes.length - 1; i >= 0; i--) {
-    var row = landscapes[i];
-    list += row.landscape + ': ' + (row.locked_by || 'unlocked') + "\n";
+    var landscape = landscapes[i];
+    list += landscape.name + ': ' + (landscape.locked_by || 'unlocked') + "\n";
   }
 
   return list;
@@ -51,16 +53,10 @@ function removeLandscapeHandler(result) { console.log(result); return 'Successfu
 function lockLandscapeHandler(result) { console.log(result); return 'Successful!'; }
 function unlockLandscapeHandler(result) { console.log(result); return 'Successful!'; }
 
-app.get('/', function(req, res) {
-  res.send('Hello World!');
-});
-
 app.post('/', urlencodedParser, function (req, res) {
 
-  console.log(req.body);
-
   var parsed = req.body.text.split(' '),
-      command =  (!parsed || parsed.length < 2) ? 'list' : parsed[0],
+      command = (!parsed || parsed.length < 2) ? 'list' : parsed[0],
       input = '',
       sql = '',
       params = [];
