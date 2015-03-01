@@ -4,7 +4,7 @@ var db = require('bluebird').promisifyAll(require('pg'));
 var app = express();
 
 var port = process.env.PORT || 5000;
-var conString = process.env.HEROKU_POSTGRESQL_YELLOW_URL || false;
+var connection_url = process.env.DATABASE_URL || '';
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -85,7 +85,7 @@ app.post('/', urlencodedParser, function (req, res) {
   }
 
   // execute query and handler
-  db.connectAsync(conString).spread(function(connection, release) {
+  db.connectAsync(connection_url).spread(function(connection, release) {
     return connection.queryAsync(sql, params)
       .then(handler)
       .then(function(response_text) {
